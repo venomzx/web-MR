@@ -1,23 +1,21 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// import Navbar from './components/Navbar.vue';
 </script>
 
 <template>
-  <div>
+  <div id="App">
+    <!-- <Navbar /> -->
+    <p>APPPPPPPP</p>
 
+    <ul>
+      <li><router-link to="/">Home</router-link></li>
+      <li><router-link to="/Login">Login</router-link></li>
+    </ul>
 
+    <router-view></router-view>
   </div>
 </template>
 
 <style scoped>
 
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-}
 </style>

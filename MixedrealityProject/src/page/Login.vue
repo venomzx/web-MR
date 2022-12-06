@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="Login">
     <form>
-        <p>Email</p>
+        <label>Email</label>
         <input v-model="email" placeholder="Email"/>
 
-        <p>Password</p>
+        <label>Password</label>
         <input v-model="password" placeholder="Password"/>
         
         <button>Confirm</button>
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-
+  name:"Login"
 }
 </script>
 
