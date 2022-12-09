@@ -1,16 +1,48 @@
 <template>
   <div id="Homepage">
-    <p>Homepage</p>
+    <div class="hero-container">
+      <p>Homepage</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Homepage",
-  
-}
+};
 </script>
 
-<style>
+<style scoped>
+.Home-container{
+  width: 1600px;
+  height: 1000px;
+  background-color: rgb(227, 198, 163);
+  justify-content: center;
+}
 
+.hero-container {
+  /* background: url('/images/img-home.jpg') center center/cover no-repeat; */
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+}
+
+.hero-container > h1 {
+  color: #fff;
+  font-size: 100px;
+  margin-top: -100px;
+}
+
+.hero-container > p {
+  margin-top: 8px;
+  color: #fff;
+  font-size: 32px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
 </style>

@@ -1,21 +1,22 @@
 <script setup>
-// import Navbar from './components/Navbar.vue';
+import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
   <div id="App">
-    <!-- <Navbar /> -->
-    <p>APPPPPPPP</p>
+    <div class="bg-web">
+      <Navbar />
 
-    <ul>
-      <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="/Login">Login</router-link></li>
-    </ul>
-
-    <router-view></router-view>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
+.bg-web {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  background-color: rgb(119, 228, 213);
+}
 </style>
