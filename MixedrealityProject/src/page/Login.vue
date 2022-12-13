@@ -5,7 +5,8 @@
         <label class="text-login">Please login with KMITL account.</label
         ><br /><br />
 
-        <button @click="onLogin()">Login with google</button>
+        <!-- <button @click="login()" >Login with google</button> -->
+        <div id="google-signin-button"></div>
         <br /><br />
 
         Login status: {{isLogin}}
@@ -18,19 +19,33 @@
 <script>
 export default {
   name: "Login",
-  data() {
+  data(){
     return {
-      isLogin: false,
+      isLogin: '',
+      
     };
   },
-  method: {
-    async onLogout() {
+  mounted() {
+    gapi.signin2.render('google-signin-button', {
+      onsuccess: this.onSignIn
+    })
+  },
+  methods: {
+    onSignIn (user) {
+      const profile = user.getBasicProfile()
+      console.log(profile)
+    },
+    async Logout() {
       const result = await this.$gAuth.signOut();
       this.isLogin = false;
       console.log("result", result);
     },
-    async onLogin() {
+    async login() {
       const googleUser = await this.$gAuth.signIn();
+
+      if(!googleUser) {
+        return null;
+      }
       console.log("googleUser", googleUser);
       // console.log("getID", googleUser.getID());
       // console.log("getBaseProfile", googleUser.getBasicProfile());
@@ -39,10 +54,7 @@ export default {
       //   "getAuthResponse$G", 
       //   this.$gAuth.GoogleAuth.currentUser.get().getAuthResponse()
       // );
-      //this.isLogin = this.$gAuth.isAuthorized;
-    },
-    Onsignup() {
-
+      this.isLogin = this.$gAuth.getBasicProfile().getEmail();
     },
   },
 };

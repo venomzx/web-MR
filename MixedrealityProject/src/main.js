@@ -2,17 +2,24 @@ import { createApp } from 'vue'
 // import Vue from 'vue'
 import App from './App.vue'
 import router from './router/index'
-import GAuth from 'vue-google-oauth2'
 
+
+import GoogleSignInPlugin from "vue3-google-signin"
+
+// ---------------------
+
+import GAuth from 'vue-google-oauth2'
 const gauthOption = {
-  clientId: '542111201265-5ro4jl8ndlvqjc1ameos7i1j8i4gils3.apps.googleusercontent.com',
-  scope: 'profile email',
+  clientId: '450388980877-eb9peglpkkdn3v48vd40kfdhjd12st5a.apps.googleusercontent.com',
+  scope: 'email',
   prompt: 'consent',
-  fetch_basic_profile: true
+  fetch_basic_profile: false
 }
 
-// Vue.use(GAuth, gauthOption)
+// ---------------------
+const app = createApp(App)
 
-createApp(App).use(router,GAuth, gauthOption).mount('#app')
+app.use(router,GAuth, gauthOption)
+app.mount('#app')
 
 
