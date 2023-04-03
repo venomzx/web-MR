@@ -1,19 +1,16 @@
 <template>
   <v-main>
-    <v-container justify="center">
+    <v-container>
       <v-row justify="center">
-        <v-form>
-          <v-row height="100">
-            <p>Login with KMITL Email</p>
-          </v-row>
-          <v-row>
-
+        <v-col cols="4">
+          <div class="d-flex flex-column mb-6 bg-surface-variant">
+            <v-sheet class="ma-4 pa-2 bg-surface-variant ">CS Gamification - Mixed Reality</v-sheet>
+            <v-sheet class="ma-4 pa-2 bg-surface-variant ">Please login with KMITL account.</v-sheet>
             <!-- <GoogleLogin :callback="callback"/> -->
-            <v-btn color="red" @click="login">Login sus</v-btn>
-
-            <v-btn color="blue" @click="Signout">Signout</v-btn>
-          </v-row>
-        </v-form>
+            <v-btn class="mt-0 mb-0 ml-6  mr-6 pa-2" color="red" @click="login">Login</v-btn>
+            <v-btn class="mt-2 mb-4 ml-6 mr-6 pa-2" color="blue" @click="Signout">Sign up</v-btn>
+          </div>
+        </v-col>
       </v-row>
     </v-container>
   </v-main>
@@ -32,23 +29,36 @@ import { googleTokenLogin } from "vue3-google-login"
 const login = () => {
   googleTokenLogin().then((response) => {
     console.log("Handle the response", response)
+    postToken(response)
     console.log(response.access_token)
   })
+
 }
 </script>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: "Login",
   data: () => ({
-
-    UserName: ""
+    UserToken: []
   }),
   methods: {
-    
+    postToken(Token) {
+      // axios.post('', {
+      //   googleToken: Token
+      // }).then((response) => {
+      //   this.UserToken = response
+      //   console.log(response)
+      // })
+    }
   },
-  created() {
-
+  mounted() {
+    // axios.get('').then((response) => {
+    //   this.UserToken = response
+    //   console.log(response)
+    // })
   }
 };
 </script>

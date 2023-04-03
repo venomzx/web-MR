@@ -1,34 +1,38 @@
 <template>
-    <v-container>
-        <v-row justify="center">
-            <v-table fixed-header height="300px" theme="dark" density="comfortable">
-                <thead>
-                    <tr>
-                        <th class="text-left">
-                            AvatarName
-                        </th>
-                        <th class="text-left">
-                            CurrentLevel
-                        </th>
-                        <th class="text-left">
-                            CurrentEXP
-                        </th>
-                        <th class="text-left">
-                            NextLevelEXPNeeded
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in SortPlayer" :key="item.AvatarName">
-                        <td>{{ item.AvatarName }}</td>
-                        <td>{{ item.CurrentLevel }}</td>
-                        <td>{{ item.CurrentEXP }}</td>
-                        <td>{{ item.NextLevelEXPNeeded }}</td>
-                    </tr>
-                </tbody>
-            </v-table>
-        </v-row>
-    </v-container>
+    <v-main class="bg-grey-lighten-3">
+        <v-container>
+            <v-row justify="center">
+                <v-table fixed-header height="480" density="comfortable">
+                    <thead>
+                        <tr>
+                            <th class="text-left">
+                                AvatarName
+                            </th>
+                            <th class="text-left">
+                                CurrentLevel
+                            </th>
+                            <th class="text-left">
+                                CurrentEXP
+                            </th>
+                            <th class="text-left">
+                                NextLevelEXPNeeded
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in SortPlayer" :key="item.AvatarName" 
+                        :style="classObject(item.CurrentLevel)"
+                        >
+                            <td>{{ item.AvatarName }}</td>
+                            <td>{{ item.CurrentLevel }}</td>
+                            <td>{{ item.CurrentEXP }}</td>
+                            <td>{{ item.NextLevelEXPNeeded }}</td>
+                        </tr>
+                    </tbody>
+                </v-table>
+            </v-row>
+        </v-container>
+    </v-main>
 </template>
 
 <script>
@@ -37,96 +41,191 @@ export default {
     data: () => ({
         Playerlist: [
             {
-                AvatarName: "code001",
+                AvatarName: "Player001",
                 CurrentLevel: 15,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 150,
-            },
-            {
-                AvatarName: "code002",
+            },{
+                AvatarName: "Player002",
                 CurrentLevel: 12,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 100,
-            },
-            {
-                AvatarName: "code003",
+            },{
+                AvatarName: "Player003",
                 CurrentLevel: 13,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 180,
             },
             {
-                AvatarName: "code004",
+                AvatarName: "Player004",
                 CurrentLevel: 14,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 160,
             },
             {
-                AvatarName: "code005",
+                AvatarName: "Player005",
                 CurrentLevel: 16,
                 CurrentEXP: 10,
                 NextLevelEXPNeeded: 200,
             },
             {
-                AvatarName: "code006",
+                AvatarName: "Player006",
                 CurrentLevel: 10,
                 CurrentEXP: 200,
                 NextLevelEXPNeeded: 10,
             },
             {
-                AvatarName: "code007",
+                AvatarName: "Player007",
                 CurrentLevel: 13,
                 CurrentEXP: 40,
                 NextLevelEXPNeeded: 180,
             },
             {
-                AvatarName: "code008",
+                AvatarName: "Player008",
                 CurrentLevel: 14,
                 CurrentEXP: 60,
                 NextLevelEXPNeeded: 160,
             },
             {
-                AvatarName: "code009",
-                CurrentLevel: 16,
+                AvatarName: "Player009",
+                CurrentLevel: 17,
                 CurrentEXP: 40,
                 NextLevelEXPNeeded: 200,
             },
             {
-                AvatarName: "code010",
+                AvatarName: "Player010",
                 CurrentLevel: 10,
                 CurrentEXP: 70,
                 NextLevelEXPNeeded: 100,
             },
             {
-                AvatarName: "code011",
-                CurrentLevel: 16,
+                AvatarName: "Player011",
+                CurrentLevel: 18,
                 CurrentEXP: 80,
                 NextLevelEXPNeeded: 200,
             },
             {
-                AvatarName: "code012",
+                AvatarName: "Player012",
                 CurrentLevel: 16,
                 CurrentEXP: 100,
                 NextLevelEXPNeeded: 200,
             },
             {
-                AvatarName: "code013",
+                AvatarName: "Player013",
                 CurrentLevel: 16,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player014",
+                CurrentLevel: 1,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player015",
+                CurrentLevel: 2,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player015",
+                CurrentLevel: 3,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player016",
+                CurrentLevel: 4,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },{
+                AvatarName: "Player017",
+                CurrentLevel: 5,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player018",
+                CurrentLevel: 6,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player019",
+                CurrentLevel: 7,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },{
+                AvatarName: "Player020",
+                CurrentLevel: 8,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player021",
+                CurrentLevel: 9,
+                CurrentEXP: 70,
+                NextLevelEXPNeeded: 200,
+            },
+            {
+                AvatarName: "Player022",
+                CurrentLevel: 19,
                 CurrentEXP: 70,
                 NextLevelEXPNeeded: 200,
             },
         ],
     }),
+    methods: {
+        classObject(level) {
+            if (level < 2) {
+                return 'background-color: white;'
+            }
+            else if(level < 7) {
+                return 'background-color: lime;'
+            }
+            else if(level < 10) {
+                return 'background-color: green;'
+            }
+            else if(level < 13) {
+                return 'background-color: silver;'
+            }
+            else if(level < 15) {
+                return 'background-color: grey;'
+            }
+            else if(level < 17) {
+                return 'background-color: yellow;'
+            }
+            else if(level < 18) {
+                return 'background-color: orange;'
+            }
+            else if(level <= 20) {
+                return 'background-color: red;'
+            }
+            else if(level > 20) {
+                return 'background-color: blue;'
+            }
+        }
+    },
     computed: {
-        SortPlayer(){
+        SortPlayer() {
             //Sort CurrentLevel: High to Low
-            return this.Playerlist.slice().sort((item1 ,item2) => {
+            return this.Playerlist.slice().sort((item1, item2) => {
                 //Sort CurrentEXP: High to Low
-                if((item2.CurrentLevel == item1.CurrentLevel)){
+                if ((item2.CurrentLevel == item1.CurrentLevel)) {
                     return item2.CurrentEXP - item1.CurrentEXP
                 }
                 return item2.CurrentLevel - item1.CurrentLevel;
             })
-        }
+        } 
     }
 }
 </script>
+
+<style scoped>
+.table {
+
+    background-color: red;
+
+}
+</style>

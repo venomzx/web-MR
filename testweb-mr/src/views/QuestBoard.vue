@@ -1,10 +1,11 @@
 <template>
-    <v-main class="bg-grey-lighten-3">
+    <v-main class="bg-grey-lighten-2">
         <v-container>
             <v-row>
+                <!-- Quest SideBar -->
                 <v-col cols="2">
                     <v-sheet rounded="lg">
-                        <v-list rounded="lg">
+                        <v-list height="400" rounded="lg">
                             <v-list-item @click="QuestType = 'N/A'">
                                 <v-list-item-title>
                                     Current Quest
@@ -16,22 +17,21 @@
                                     Expire Quest
                                 </v-list-item-title>
                             </v-list-item>
-
                             <v-divider class="my-2"></v-divider>
-
-                            <v-list-item link color="grey-lighten-4">
+                            <v-list-item @click="dialogManage()">
                                 <v-list-item-title>
-                                    Refresh
+                                    Manage Quest
                                 </v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-sheet>
                 </v-col>
 
+                <!-- Quest Board area -->
                 <v-col cols="10" align-self="end">
                     <v-row align-content="space-around">
                         <v-col v-for="card in FilterQuest" :key="card.QuestID" cols="5">
-                            <v-card color="primary" @click="!isVisible">
+                            <v-card color="blue" @click="!isVisible">
                                 <v-card-title class="text-white"
                                     v-text="card.QuestID + ' ' + card.QuestName"></v-card-title>
                                 <v-card-subtitle v-text="'Requirement: ' + card.Requirement"></v-card-subtitle>
@@ -39,14 +39,14 @@
                                     Description
                                     <v-card-text v-text="card.Description" height="100"></v-card-text>
                                 </v-card-text>
-                                <!-- <v-card-text v-text="'Duration: ' + card.Duration + ' , ' + 'Expire: ' + card.QuestExpire"></v-card-text> -->
+
                                 <div class="d-flex flex-row">
                                     <v-card-text v-text="'Duration: ' + card.Duration"></v-card-text>
                                     <v-card-text v-text="'Expire: ' + card.QuestExpire"></v-card-text>
                                 </div>
                                 <div class="d-flex flex-row">
                                     <v-card-actions>
-                                        <v-btn @click="SeeDetails(card)" v-text="'See Details'" color="light"></v-btn>
+                                        <v-btn @click="dialogSeeDetails(card)" v-text="'See Details'" color="light"></v-btn>
                                     </v-card-actions>
                                     <v-card-actions>
                                         <v-btn @click="logdata(card.QuestName)" v-text="'Get Quest'"></v-btn>
@@ -60,7 +60,7 @@
         </v-container>
 
         <!-- PopUP Panel Quest Details -->
-        <v-dialog v-model="dialog" width="auto">
+        <v-dialog v-model="dialog.dialogDetailQuest" width="auto">
             <v-card>
                 <v-card-title class="text-white" v-text="showDetail.QuestID + ' ' + showDetail.QuestName"></v-card-title>
                 <v-card-subtitle v-text="'Requirement: ' + showDetail.Requirement"></v-card-subtitle>
@@ -73,15 +73,87 @@
                         v-text="'Duration: ' + showDetail.Duration + ' , ' + 'Expire: ' + showDetail.QuestExpire"></v-card-text>
                 </v-container>
                 <v-card-actions>
-                    <v-btn color="primary" block @click="dialog = false"> Close </v-btn>
+                    <v-btn color="primary" block @click="dialogDetailQuest = false"> Close </v-btn>
 
                 </v-card-actions>
                 <v-card-actions>
                     <v-btn color="primary" block>
                         Click
-                    </v-btn></v-card-actions>
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <!-- PopUP Panel Manage Quest -->
+        <v-dialog v-model="dialog.dialogManageQuest">
+            <v-card theme="dark">
+                <v-toolbar dark color="blue">
+                    <v-btn @click="dialog.dialogManageQuest = false">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>Manage Quest</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-row>
+                    <v-col cols="2">
+                        <v-sheet rounded="lg">
+                            <v-list rounded="lg">
+                                <v-list-item>
+                                    <v-list-item-title>
+                                        Add New Quest
+                                    </v-list-item-title>
+                                </v-list-item>
+                                <v-divider class="my-2"></v-divider>
+                                <div v-for="Quest in Testdata" :key=Quest.QuestID>
+                                    <v-list-item>
+                                        <v-list-item-title>
+                                            Quest {{ Quest.QuestID }}
+                                        </v-list-item-title>
+                                    </v-list-item>
+                                </div>
+                            </v-list>
+                        </v-sheet>
+                    </v-col>
+                    <v-col>
+                        <v-form class="ma-6">
+                            <v-row>
+                                <v-col>
+                                    <v-sheet>Status Quest</v-sheet>
+                                    <v-select label="Select Status"
+                                        :items="['Unassign', 'Available', 'Expired',]"></v-select>
+
+                                    <v-sheet>Quest Name</v-sheet>
+                                    <v-text-field name="Quest Name" label="Quest Name" id="id"></v-text-field>
+
+                                    <v-sheet>Requirement</v-sheet>
+                                    <v-text-field name="Requirement" label="Requirement" id="id"></v-text-field>
+
+                                    <v-sheet>Description</v-sheet>
+                                    <v-textarea name="name" label="Description" textarea></v-textarea>
+
+                                    <v-sheet>Reward</v-sheet>
+                                    <v-text-field name="Reward" label="Reward" id="id"></v-text-field>
+                                </v-col>
+                                <v-col>
+                                    <v-sheet>Duration</v-sheet>
+                                    <v-select label="Select" :items="['1 Days', '3 Days', '5 Days', '7 Days',]"></v-select>
+
+                                    <v-sheet>Due date</v-sheet>
+                                    <v-text-field name="Due date" label="Due date"
+                                        prepend-icon="mdi-calendar-range"></v-text-field>
+                                </v-col>
+
+                            </v-row>
+                            <v-btn>Cancel</v-btn>
+                            <v-btn>Confirm</v-btn>
+
+                        </v-form>
+                    </v-col>
+                </v-row>
+            </v-card>
+
+        </v-dialog>
+
     </v-main>
 </template>
 
@@ -90,17 +162,22 @@
 import axios from 'axios'
 
 
+
 const url = 'https://your-api-server';
 
 export default {
     name: "QuestBoard",
     data: () => ({
+        due: "",
         QuestType: "N/A",
-        dialog: false,
-        Test: 0,
-        showDetail: [
+        dialog: {
+            dialogConfirm: false,
+            dialogDetailQuest: false,
+            dialogManageQuest: false,
+        },
 
-        ],
+        QuestList: [],
+        showDetail: [],
         Testdata: [
             {
                 QuestID: "001",
@@ -218,7 +295,7 @@ export default {
         async getdata() {
             const data = await axios.get(url).then((response) => {
                 // handle success
-                console.log("Get:" ,response);
+                console.log("Get:", response);
             })
                 .catch((error) => {
                     // handle errors
@@ -227,7 +304,7 @@ export default {
         postdata() {
             const data = axios.post(url).then((response) => {
                 // handle success
-                console.log("Post:" ,response);
+                console.log("Post:", response);
             })
                 .catch((error) => {
                     // handle errors
@@ -236,27 +313,33 @@ export default {
         logdata(data) {
             console.log(data)
         },
-        SeeDetails(cardData) {
-            this.dialog = true
+        dialogSeeDetails(cardData) {
+            this.dialog.dialogDetailQuest = true
             this.showDetail = cardData
         },
+        dialogManage() {
+            this.dialog.dialogManageQuest = true
+        },
 
-        
+
     },
     computed: {
         FilterQuest() {
             return this.Testdata.filter(item => {
                 return item.Requirement == this.QuestType
-            })
+            })            
         },
     },
-    watch: {
-        Test: {
-            handler(b1, b2) {
-                b2 = b1 + 100000
-                console.log(b2)
-            }
-        }
+    mounted() {
+        axios.get(url).then((response) => {
+            // handle success
+            console.log("Get:", response);
+            this.QuestList = response
+        })
+            .catch((error) => {
+                // handle errors
+                console.log("ErrorGetQuest", error);
+            });
     }
 }
 </script>
