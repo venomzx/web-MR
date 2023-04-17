@@ -21,7 +21,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="item in SortPlayer" :key="item.AvatarName" 
-                        :style="classObject(item.CurrentLevel)"
+                        :style="defaultPlayerTiers(item.CurrentLevel)"
                         >
                             <td>{{ item.AvatarName }}</td>
                             <td>{{ item.CurrentLevel }}</td>
@@ -175,9 +175,39 @@ export default {
                 NextLevelEXPNeeded: 200,
             },
         ],
+        SettingTiers:[],
     }),
     methods: {
-        classObject(level) {
+        defaultPlayerTiers(level) {
+            if (level < 2) {
+                return 'background-color: white;'
+            }
+            else if(level < 7) {
+                return 'background-color: lime;'
+            }
+            else if(level < 10) {
+                return 'background-color: green;'
+            }
+            else if(level < 13) {
+                return 'background-color: silver;'
+            }
+            else if(level < 15) {
+                return 'background-color: grey;'
+            }
+            else if(level < 17) {
+                return 'background-color: yellow;'
+            }
+            else if(level < 18) {
+                return 'background-color: orange;'
+            }
+            else if(level <= 20) {
+                return 'background-color: red;'
+            }
+            else if(level > 20) {
+                return 'background-color: blue;'
+            }
+        },
+        displayPlayerTiers(level) {
             if (level < 2) {
                 return 'background-color: white;'
             }

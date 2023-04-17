@@ -9,17 +9,23 @@ export default createStore({
         UserAvatarName:"",
         UserRole:"",
         User:"",
-      }
+      },
+
     }
   },
   getters: {
     
   },
   mutations: {
+    getUserToken(state, token) {
+      state.UserToken = token
+    },
 
   },
   actions: {
-
+    getUserTokenAction(context,tokenValue) {
+      context.commit('getUserToken', tokenValue)
+    },
   },
   modules: {
     

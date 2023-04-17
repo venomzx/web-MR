@@ -9,6 +9,7 @@
             <!-- <GoogleLogin :callback="callback"/> -->
             <v-btn class="mt-0 mb-0 ml-6  mr-6 pa-2" color="red" @click="login">Login</v-btn>
             <v-btn class="mt-2 mb-4 ml-6 mr-6 pa-2" color="blue" @click="Signout">Sign up</v-btn>
+            {{ "Token :" + this.$store.state.UserToken }}
           </div>
         </v-col>
       </v-row>
@@ -23,21 +24,14 @@
 //   console.log("Handle the response", response)
 //   // console.log(response.credential)
 // }
-
-import { googleTokenLogin } from "vue3-google-login"
-
-const login = () => {
-  googleTokenLogin().then((response) => {
-    console.log("Handle the response", response)
-    postToken(response)
-    console.log(response.access_token)
-  })
-
-}
 </script>
 
 <script>
 import axios from 'axios'
+import { googleTokenLogin } from "vue3-google-login"
+
+// Set URL Backend
+const URL = ""
 
 export default {
   name: "Login",
@@ -45,20 +39,30 @@ export default {
     UserToken: []
   }),
   methods: {
+    add(Token) {
+      this.$store.dispatch("getUserToken")
+      console.log(this.$store.state.UserToken)
+    },
+    login() {
+      googleTokenLogin().
+        then((response) => {
+          console.log("Handle the response", response)
+          console.log(response.access_token)
+          
+          this.postToken(response)
+          //this.add(response)
+          //console.log("Token Test" + this.$store.state.UserToken)
+        })
+    },
     postToken(Token) {
-      // axios.post('', {
-      //   googleToken: Token
-      // }).then((response) => {
-      //   this.UserToken = response
-      //   console.log(response)
-      // })
+      axios.post(URL, {
+        googleToken: Token
+      }).then((response) => {
+        this.UserToken = response
+        console.log(response)
+        console.log(this.UserToken)
+      })
     }
   },
-  mounted() {
-    // axios.get('').then((response) => {
-    //   this.UserToken = response
-    //   console.log(response)
-    // })
-  }
 };
 </script>
