@@ -8,8 +8,8 @@
             <v-sheet class="ma-4 pa-2 bg-surface-variant ">Please login with KMITL account.</v-sheet>
             <!-- <GoogleLogin :callback="callback"/> -->
             <v-btn class="mt-0 mb-0 ml-6  mr-6 pa-2" color="red" @click="login">Login</v-btn>
-            <v-btn class="mt-2 mb-4 ml-6 mr-6 pa-2" color="blue" @click="Signout">Sign up</v-btn>
-            {{ "Token :" + this.$store.state.UserToken }}
+            <v-btn class="mt-2 mb-4 ml-6 mr-6 pa-2" color="blue" @click="signUp">Sign up</v-btn>
+            {{ "Token :" + this.$store.state.user_token }}
           </div>
         </v-col>
       </v-row>
@@ -39,28 +39,51 @@ export default {
     UserToken: []
   }),
   methods: {
-    add(Token) {
-      this.$store.dispatch("getUserToken")
-      console.log(this.$store.state.UserToken)
+    // Set Token to store
+    getToken(Token) {
+      this.$store.dispatch("getUserTokenAction", Token)
+      //console.log(this.$store.state.user_token)
     },
+    //Login
     login() {
       googleTokenLogin().
         then((response) => {
-          console.log("Handle the response", response)
-          console.log(response.access_token)
-          
-          this.postToken(response)
-          //this.add(response)
-          //console.log("Token Test" + this.$store.state.UserToken)
+          //console.log("Handle the response", response)
+          //console.log(response.access_token)
+          //Test
+          this.getToken(response)
+
+          //this.postToken()
         })
     },
+    // SignUp 
+    signUp(){
+      googleTokenLogin().
+        then((response) => {
+          //console.log("Handle the response", response)
+          //console.log(response.access_token)
+
+          //this.postToken()
+        })
+    },
+    // post to Backend
     postToken(Token) {
       axios.post(URL, {
         googleToken: Token
       }).then((response) => {
-        this.UserToken = response
-        console.log(response)
-        console.log(this.UserToken)
+        if(response.status == "OK") {
+          // Get Token
+          this.getToken(response)
+          // route to Quest Board
+
+        }
+        else if(response.status == "Register") {
+          // route to Register Avatar
+
+        }else{
+          alert("Please login with KMITL Email ")
+        }
+        
       })
     }
   },

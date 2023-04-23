@@ -3,13 +3,15 @@ import { createStore } from 'vuex'
 export default createStore({
   state() {
     return {
-      UserToken:"",
-      User:{
-        UserID:"",
-        UserAvatarName:"",
-        UserRole:"",
-        User:"",
+      user_token:"-1",
+      user:{
+        user_id:"",
+        user_avatarname:"",
+        user_role:"",
+        user:"",
       },
+      questList:[],
+      settingPlayerBoard:[],
 
     }
   },
@@ -17,15 +19,28 @@ export default createStore({
     
   },
   mutations: {
+    // Login
     getUserToken(state, token) {
-      state.UserToken = token
+      state.user_token = token
     },
+
 
   },
   actions: {
-    getUserTokenAction(context,tokenValue) {
-      context.commit('getUserToken', tokenValue)
+    // Login Action
+    getUserTokenAction({ commit },tokenValue) {
+      commit('getUserToken', tokenValue)
     },
+    
+    // Quest Action
+    getListQuest({commit},) {
+
+    },
+
+    // Teacher Manage Quest
+
+
+
   },
   modules: {
     

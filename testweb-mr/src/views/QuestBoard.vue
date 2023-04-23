@@ -359,8 +359,8 @@ export default {
         },
 
         //Get List of Quest
-        async getdata() {
-            const data = await axios.get(URLGET).then((response) => {
+        async getData() {
+            await axios.get(URLGET).then((response) => {
                 // handle success
                 console.log("Get:", response);
             })
@@ -400,6 +400,9 @@ export default {
             })
         },
     },
+    mounted(){
+        this.getData()
+    }
     // Async() {
     //     axios.get(url).then((response) => {
     //         // handle success

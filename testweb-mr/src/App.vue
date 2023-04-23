@@ -10,9 +10,8 @@
       <v-btn router-link to="/PlayerBoard">PlayerBoard</v-btn>
       <v-btn router-link to="/Party">Party</v-btn>
     </v-app-bar> -->
-    
+    <Navbar />
     <v-main>
-      <Navbar />
       <router-view />
     </v-main>
   </v-app>

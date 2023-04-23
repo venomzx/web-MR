@@ -20,9 +20,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in SortPlayer" :key="item.AvatarName" 
-                        :style="defaultPlayerTiers(item.CurrentLevel)"
-                        >
+                        <div v-if="SortPlayer == 0">
+                                <v-sheet>No Player Found</v-sheet>
+                            </div>
+                        <tr v-for="item in SortPlayer" :key="item.AvatarName"
+                            :style="SettingTier == 0 ? defaultPlayerTiers(item.CurrentLevel) : displayPlayerTiers(item.CurrentLevel)">
+                            
                             <td>{{ item.AvatarName }}</td>
                             <td>{{ item.CurrentLevel }}</td>
                             <td>{{ item.CurrentEXP }}</td>
@@ -36,21 +39,26 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const URL_getplayer = ""
+const URL_Setting = ""
+
 export default {
     name: "PlayerBoard",
     data: () => ({
-        Playerlist: [
+        testPlayerlist: [
             {
                 AvatarName: "Player001",
                 CurrentLevel: 15,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 150,
-            },{
+            }, {
                 AvatarName: "Player002",
                 CurrentLevel: 12,
                 CurrentEXP: 20,
                 NextLevelEXPNeeded: 100,
-            },{
+            }, {
                 AvatarName: "Player003",
                 CurrentLevel: 13,
                 CurrentEXP: 20,
@@ -139,7 +147,7 @@ export default {
                 CurrentLevel: 4,
                 CurrentEXP: 70,
                 NextLevelEXPNeeded: 200,
-            },{
+            }, {
                 AvatarName: "Player017",
                 CurrentLevel: 5,
                 CurrentEXP: 70,
@@ -156,7 +164,7 @@ export default {
                 CurrentLevel: 7,
                 CurrentEXP: 70,
                 NextLevelEXPNeeded: 200,
-            },{
+            }, {
                 AvatarName: "Player020",
                 CurrentLevel: 8,
                 CurrentEXP: 70,
@@ -175,64 +183,91 @@ export default {
                 NextLevelEXPNeeded: 200,
             },
         ],
-        SettingTiers:[],
+        Playerlist:[{
+                AvatarName: "Player001",
+                CurrentLevel: 15,
+                CurrentEXP: 20,
+                NextLevelEXPNeeded: 150,
+            }],
+        SettingTier: [],
     }),
     methods: {
+        async getPlayerList() {
+            await axios.get(URL_getplayer).then((response) => {
+                // handle success
+                this.Playerlist = response
+                console.log("Get:", response);
+            })
+                .catch((error) => {
+                    // handle errors
+                });
+        },
+        async getSetting() {
+            await axios.get(URL_Setting).then((response) => {
+                // handle success
+                // Get Setting
+                this.SettingTier = response
+                console.log("Get:", response);
+            })
+                .catch((error) => {
+                    // handle errors
+                });
+        },
         defaultPlayerTiers(level) {
             if (level < 2) {
                 return 'background-color: white;'
             }
-            else if(level < 7) {
+            else if (level < 7) {
                 return 'background-color: lime;'
             }
-            else if(level < 10) {
+            else if (level < 10) {
                 return 'background-color: green;'
             }
-            else if(level < 13) {
+            else if (level < 13) {
                 return 'background-color: silver;'
             }
-            else if(level < 15) {
+            else if (level < 15) {
                 return 'background-color: grey;'
             }
-            else if(level < 17) {
+            else if (level < 17) {
                 return 'background-color: yellow;'
             }
-            else if(level < 18) {
+            else if (level < 18) {
                 return 'background-color: orange;'
             }
-            else if(level <= 20) {
+            else if (level <= 20) {
                 return 'background-color: red;'
             }
-            else if(level > 20) {
+            else if (level > 20) {
                 return 'background-color: blue;'
             }
         },
         displayPlayerTiers(level) {
-            if (level < 2) {
-                return 'background-color: white;'
+            if (level < this.SettingTier.Tier1_Level) {
+                return 'background-color: ' + this.SettingTier.Tier1_Color + ';'
             }
-            else if(level < 7) {
-                return 'background-color: lime;'
+            else if (level < this.SettingTier.Tier2_Level) {
+                return 'background-color: ' + this.SettingTier.Tier2_Color + ';'
             }
-            else if(level < 10) {
-                return 'background-color: green;'
+            else if (level < this.SettingTier.Tier3_Level) {
+                return 'background-color: ' + this.SettingTier.Tier3_Color + ';'
             }
-            else if(level < 13) {
-                return 'background-color: silver;'
+            else if (level < this.SettingTier.Tier4_Level) {
+                return 'background-color: ' + this.SettingTier.Tier4_Color + ';'
             }
-            else if(level < 15) {
-                return 'background-color: grey;'
+            else if (level < this.SettingTier.Tier5_Level) {
+                return 'background-color: ' + this.SettingTier.Tier5_Color + ';'
             }
-            else if(level < 17) {
-                return 'background-color: yellow;'
+            else if (level < this.SettingTier.Tier6_Level) {
+                return 'background-color: ' + this.SettingTier.Tier6_Color + ';'
             }
-            else if(level < 18) {
-                return 'background-color: orange;'
+            else if (level < this.SettingTier.Tier7_Level) {
+                return 'background-color: ' + this.SettingTier.Tier7_Color + ';'
             }
-            else if(level <= 20) {
-                return 'background-color: red;'
+            else if (level <= this.SettingTier.Tier8_Level) {
+                return 'background-color: ' + this.SettingTier.Tier8_Color + ';'
             }
-            else if(level > 20) {
+            else if (level > 20) {
                 return 'background-color: blue;'
             }
         }
@@ -247,7 +282,11 @@ export default {
                 }
                 return item2.CurrentLevel - item1.CurrentLevel;
             })
-        } 
+        }
+    },
+    mounted() {
+        //this.getPlayerList()
+        //this.getSetting()
     }
 }
 </script>

@@ -1,17 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+const isLogin = false
+
+// const isLogin = this.$store.state.user_token
 
 const routes = [
   {
-    // redirect to login LATER
     path: '/',
-    name: 'home',
-    component: HomeView
+    redirect: isLogin == "" ? '/QuestBoard' : '/Login'
   },
   {
     path: '/Login',
     name: 'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/RegisterAvatar',
+    name: 'RegisterAvatar',
+    component: () => import('../views/RegisterAvatar.vue')
   },
   {
     path: '/QuestBoard',

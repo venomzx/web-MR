@@ -52,6 +52,10 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const URL_getlog = ""
+
 export default {
   name: "LogEvent",
   data: () => ({
@@ -360,6 +364,23 @@ export default {
       }
 
     ],
+    log: [],
   }),
+  methods: {
+    async getLog() {
+      await axios.get(URL_getlog).then((response) => {
+        // handle success
+        this.log = response
+        
+        console.log("Get:", response);
+      })
+        .catch((error) => {
+          // handle errors
+        });
+    }
+  },
+  mounted() {
+    this.getLog()
+  }
 }
 </script>

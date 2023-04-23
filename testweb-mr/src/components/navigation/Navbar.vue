@@ -16,7 +16,7 @@
 
       <v-navigation-drawer
         v-model="drawer"
-        temporary
+        temporaryww
         color="blue"
       >
         <v-list-item
@@ -28,10 +28,31 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-login" title="Login" router-link to="/Login"></v-list-item>
-          <v-list-item prepend-icon="mdi-view-dashboard" title="QuestBoard" router-link to="/QuestBoard"></v-list-item>
-          <v-list-item prepend-icon="mdi-history" title="Log" router-link to="/LogEvent"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-group" title="PlayerBoard" router-link to="/PlayerBoard"></v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-login" 
+            title="Login" 
+            router-link to="/Login">
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-login" 
+            title="RegisterAvatar" 
+            router-link to="/RegisterAvatar">
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-view-dashboard" 
+            title="QuestBoard" 
+            router-link to="/QuestBoard">
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-history" 
+            title="Log" 
+            router-link to="/LogEvent">
+          </v-list-item>
+          <v-list-item 
+            prepend-icon="mdi-account-group" 
+            title="PlayerBoard" 
+            router-link to="/PlayerBoard">
+          </v-list-item>
           <!-- <v-list-item title="Party" router-link to="/Party"></v-list-item> -->
         </v-list>
       </v-navigation-drawer>
