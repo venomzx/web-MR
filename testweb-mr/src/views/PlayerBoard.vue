@@ -47,7 +47,7 @@ const URL_Setting = ""
 export default {
     name: "PlayerBoard",
     data: () => ({
-        testPlayerlist: [
+        Playerlist: [
             {
                 AvatarName: "Player001",
                 CurrentLevel: 15,
@@ -183,7 +183,7 @@ export default {
                 NextLevelEXPNeeded: 200,
             },
         ],
-        Playerlist:[{
+        tPlayerlist:[{
                 AvatarName: "Player001",
                 CurrentLevel: 15,
                 CurrentEXP: 20,

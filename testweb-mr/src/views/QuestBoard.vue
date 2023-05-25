@@ -6,12 +6,12 @@
                 <v-col cols="2">
                     <v-sheet rounded="lg">
                         <v-list height="400" rounded="lg">
-                            <v-list-item @click="QuestType = 'N/A'">
+                            <v-list-item @click="questType = 'N/A'">
                                 <v-list-item-title>
                                     Current Quest
                                 </v-list-item-title>
                             </v-list-item>
-                            <v-list-item @click="QuestType = 'Level 1'">
+                            <v-list-item @click="questType = 'Level 1'">
                                 <v-list-item-title>
                                     <!-- Quest Expire -->
                                     Expire Quest
@@ -61,7 +61,7 @@
 
         <!-- PopUP Panel Quest Details -->
         <v-dialog v-model="dialog.dialogDetailQuest" width="auto">
-            <v-card>
+            <v-card theme="dark">
                 <v-card-title class="text-white" v-text="showDetail.QuestID + ' ' + showDetail.QuestName"></v-card-title>
                 <v-card-subtitle v-text="'Requirement: ' + showDetail.Requirement"></v-card-subtitle>
                 <v-container>
@@ -73,12 +73,12 @@
                         v-text="'Duration: ' + showDetail.Duration + ' , ' + 'Expire: ' + showDetail.QuestExpire"></v-card-text>
                 </v-container>
                 <v-card-actions>
-                    <v-btn color="primary" block @click="dialogDetailQuest = false"> Close </v-btn>
+                    <v-btn color="primary" block @click="dialog.dialogDetailQuest = false"> Close </v-btn>
 
                 </v-card-actions>
                 <v-card-actions>
                     <v-btn color="primary" block>
-                        Click
+                        Get this quest
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -100,12 +100,12 @@
                     <v-col cols="2">
                         <v-sheet rounded="lg">
                             <v-list rounded="lg">
-                                <v-list-item>
+                                <v-list-item @click="dialogSelectQuest(Quest)">
                                     <v-list-item-title>
                                         Add New Quest
                                     </v-list-item-title>
                                 </v-list-item>
-                                <v-divider class="my-2"></v-divider>
+                                <v-divider class="my-2" />
                                 <div v-for="Quest in QuestList" :key=Quest.QuestID>
                                     <v-list-item @click="dialogSelectQuest(Quest)">
                                         <v-list-item-title>
@@ -128,8 +128,7 @@
 
                                     <v-sheet>Quest ID</v-sheet>
                                     <v-text-field name="Quest ID" label="Quest ID"
-                                        :model-value="selectQuest.QuestID"
-                                        ></v-text-field>
+                                        :model-value="selectQuest.QuestID"></v-text-field>
 
                                     <v-sheet>Quest Name</v-sheet>
                                     <v-text-field name="Quest Name" label="Quest Name"
@@ -137,14 +136,15 @@
 
                                     <v-sheet>Requirement</v-sheet>
                                     <v-text-field name="Requirement" label="Requirement"
-                                    :model-value="selectQuest.Requirement"></v-text-field>
+                                        :model-value="selectQuest.Requirement"></v-text-field>
 
                                     <v-sheet>Description</v-sheet>
                                     <v-textarea name="name" label="Description" textarea
-                                    :model-value="selectQuest.Description"></v-textarea>
+                                        :model-value="selectQuest.Description"></v-textarea>
 
                                     <v-sheet>Reward</v-sheet>
-                                    <v-text-field name="Reward" label="Reward" :model-value="selectQuest.Reward"></v-text-field>
+                                    <v-text-field name="Reward" label="Reward"
+                                        :model-value="selectQuest.Reward"></v-text-field>
                                 </v-col>
                                 <v-col>
                                     <v-sheet>Duration</v-sheet>
@@ -153,19 +153,25 @@
                                         :model-value="selectQuest.Duration"></v-select>
 
                                     <v-sheet>Due date</v-sheet>
-
+                                    <!-- Check Box for select Due date -->
+                                    
                                     <!-- <v-text-field v-if="selectQuest.QuestExpire == 'N/A'" name="Due date" label="Due date" prepend-icon="mdi-calendar-range"
                                     type="date"    
                                     :model-value="selectQuest.QuestExpire"
                                     
                                     ref="QIDEZEZ"
                                     ></v-text-field> -->
-                                    <v-text-field name="Due date" label="Due date" prepend-icon="mdi-calendar-range"
-                                    type="date"    
-                                    :model-value="selectQuest.QuestExpire"
-                                    
-                                    ref="QIDEZEZ"
-                                    ></v-text-field>
+
+                                    <v-text-field :disabled="!disableButton" name="Due date" label="Due date" prepend-icon="mdi-calendar-range"
+                                        :type="disableButton? 'date': 'text' " :model-value="disableButton ? selectQuest.QuestExpire : 'N/A' "
+                                        ref="DueDateValue"></v-text-field>
+                                    <v-checkbox 
+                                        label="Set Due date"
+                                        ref="SetDueDate"
+                                        v-model ="disableButton"
+                                    >
+                                    </v-checkbox>
+                                    {{ this.disableButton }}
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -184,7 +190,8 @@
 <script>
 
 import axios from 'axios'
-// import moment from 'moment'
+// import moment from 'moments'
+
 
 
 // Set URL Backend
@@ -197,7 +204,8 @@ export default {
     name: "QuestBoard",
     data: () => ({
         due: "",
-        QuestType: "N/A",
+        disableButton: false,
+        questType: "N/A",
         dialog: {
             dialogConfirm: false,
             dialogDetailQuest: false,
@@ -205,38 +213,38 @@ export default {
         },
 
         QuestList: [{
-                QuestID: "001",
-                QuestName: "Joining the journey",
-                Description: "Join Google Classroom of mixed reality class with code wceeoa",
-                Reward: "5 exp",
-                Requirement: "Level 1",
-                MinParty: 1,
-                MaxParty: 1,
-                Duration: "5 Days",
-                QuestExpire: "N/A"
-            },
-            {
-                QuestID: "002",
-                QuestName: "Explore the world",
-                Description: "Find your selected mixed reality program and describe where in reality-virtuality continuum it should be",
-                Reward: "5 exp",
-                Requirement: "N/A",
-                MinParty: 1,
-                MaxParty: 1,
-                Duration: "5 Days",
-                QuestExpire: "27/08/2023"
-            },
-            {
-                QuestID: "003",
-                QuestName: "Senses",
-                Description: "Pick 2 or more senses of human body and describe how they work collaborately with each other and what human body expect to sense from them",
-                Reward: "10 exp",
-                Requirement: "N/A",
-                MinParty: 1,
-                MaxParty: 2,
-                Duration: "5 Days",
-                QuestExpire: "03/09/2023"
-            },],
+            QuestID: "001",
+            QuestName: "Joining the journey",
+            Description: "Join Google Classroom of mixed reality class with code wceeoa",
+            Reward: "5 exp",
+            Requirement: "Level 1",
+            MinParty: 1,
+            MaxParty: 1,
+            Duration: "5 Days",
+            QuestExpire: "N/A"
+        },
+        {
+            QuestID: "002",
+            QuestName: "Explore the world",
+            Description: "Find your selected mixed reality program and describe where in reality-virtuality continuum it should be",
+            Reward: "5 exp",
+            Requirement: "N/A",
+            MinParty: 1,
+            MaxParty: 1,
+            Duration: "5 Days",
+            QuestExpire: "27/08/2023"
+        },
+        {
+            QuestID: "003",
+            QuestName: "Senses",
+            Description: "Pick 2 or more senses of human body and describe how they work collaborately with each other and what human body expect to sense from them",
+            Reward: "10 exp",
+            Requirement: "N/A",
+            MinParty: 1,
+            MaxParty: 2,
+            Duration: "5 Days",
+            QuestExpire: "03/09/2023"
+        },],
         showDetail: [],
         selectQuest: [],
         Testdata: [
@@ -369,7 +377,7 @@ export default {
                 });
         },
         postdata(Quest) {
-            axios.post(URLPOST,{
+            axios.post(URLPOST, {
                 QuestID: Quest
             }).then((response) => {
                 // handle success
@@ -379,7 +387,7 @@ export default {
                     // handle errors
                 });
         },
-        
+
         dialogSeeDetails(cardData) {
             this.dialog.dialogDetailQuest = true
             this.showDetail = cardData
@@ -396,12 +404,12 @@ export default {
     computed: {
         FilterQuest() {
             return this.Testdata.filter(item => {
-                return item.Requirement == this.QuestType
+                return item.Requirement == this.questType
             })
         },
     },
-    mounted(){
-        this.getData()
+    mounted() {
+        // this.getData()
     }
     // Async() {
     //     axios.get(url).then((response) => {
