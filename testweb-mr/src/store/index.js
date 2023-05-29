@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import axios from '@/api/axios'
+import { push } from 'vue-router'
 // import jwt from 'jsonwebtoken';
 
 
@@ -56,7 +57,7 @@ export default createStore({
     // Set time that admin stay sign in
     setLogoutTimer({ commit, dispatch }, expirationTime) {
       setTimeout(() => {
-        dispatch("logout");
+        dispatch("logoutAction");
         // }, expirationTime * 1000)
 
         alert("Session หมดอายุแล้ว กรุณา Login ใหม่")
@@ -83,14 +84,14 @@ export default createStore({
       // Check token from localStorage
       const token = localStorage.getItem("token");
       if (!token) {
-        dispatch("logout")
+        dispatch("logoutAction")
         return;
       }
       // Check if token is expired
       const expirationDate = new Date(localStorage.getItem("expirationDate"));
       const now = new Date();
       if (now >= expirationDate) {
-        dispatch("logout")
+        dispatch("logoutAction")
         alert('Session หมดอายุแล้ว กรุณา Login ใหม่');
         return;
       }
@@ -110,7 +111,8 @@ export default createStore({
       localStorage.removeItem("userRole");
       commit("clearAuthData");
       // localStorage.removeItem('userId')
-      this.$router.replace("/Login");
+      // this.$router.push("/Login")
+      
     },
   },
   modules: {

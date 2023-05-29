@@ -30,7 +30,8 @@
                 <!-- Quest Board area -->
                 <v-col cols="10" align-self="end">
                     <v-row>
-                        <v-col v-for="card in FilterQuest" :key="card.QuestID" cols="5">
+                        <!-- <v-col v-for="card in FilterQuest" :key="card.QuestID" cols="5"> -->
+                        <v-col v-for="card in TQuestList" :key="card.QuestID" cols="5">
                             <v-card color="blue" @click="!isVisible">
                                 <v-card-title class="text-white"
                                     v-text="card.QuestID + ' ' + card.QuestName"></v-card-title>
@@ -213,7 +214,7 @@ export default {
         QuestList: [],
         showDetail: [],
         selectQuest: [],
-        TestQuestList: [
+        TQuestList: [
             {
                 QuestID: "001",
                 QuestName: "Joining the journey",

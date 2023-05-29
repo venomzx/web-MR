@@ -195,7 +195,7 @@ export default {
         async getPlayerList() {
             await axios.get(URL_getplayer).then((response) => {
                 // handle success
-                this.Playerlist = response
+                this.playerList = response
                 console.log("Get:", response);
             })
                 .catch((error) => {
@@ -277,7 +277,7 @@ export default {
     computed: {
         SortPlayer() {
             //Sort CurrentLevel: High to Low
-            return this.Playerlist.slice().sort((item1, item2) => {
+            return this.playerList.slice().sort((item1, item2) => {
                 //Sort CurrentEXP: High to Low
                 if ((item2.CurrentLevel == item1.CurrentLevel)) {
                     return item2.CurrentEXP - item1.CurrentEXP

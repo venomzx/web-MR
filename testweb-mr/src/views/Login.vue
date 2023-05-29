@@ -4,12 +4,12 @@
       <v-row justify="center">
         <v-col cols="4">
           <div class="d-flex flex-column mb-6 bg-surface-variant">
-            <v-sheet class="ma-4 pa-2 bg-surface-variant ">CS Gamification - Mixed Reality</v-sheet>
+            <v-sheet class="ma-4 pa-2 bg-surface-variant ">Task Management assistant - Mixed Reality</v-sheet>
             <v-sheet class="ma-4 pa-2 bg-surface-variant ">Please login with KMITL account.</v-sheet>
             <!-- <GoogleLogin :callback="callback"/> -->
             <v-btn class="mt-0 mb-0 ml-6  mr-6 pa-2" color="red" @click="onLogin">Login</v-btn>
             <v-btn class="mt-2 mb-4 ml-6 mr-6 pa-2" color="blue" @click="onSignUp">Sign up</v-btn>
-            {{ "Token :" + this.$store.state.user_token }}
+            <!-- {{ "Token :" + this.$store.state.user_token }} -->
           </div>
         </v-col>
       </v-row>
@@ -42,6 +42,7 @@ export default {
       googleTokenLogin().
         then((response) => {
           // this.postAccessTokenToBackend(response)
+          console.log(response.access_token)
           this.postAccessTokenToBackend(response.access_token)
         })
     },
@@ -60,9 +61,11 @@ export default {
       axios.post(URL_Login, {
         accessToken: Token
       }).then((response) => {
+
         // --- Login Success case --- 
         console.log(response)
         console.log(response.data.status)
+
         if (response.data.status == "OK") {
           // Store Token
           this.storeToken(response.data.encoded_jwt)
@@ -70,6 +73,7 @@ export default {
           // route to Quest Board
           this.$router.push("/QuestBoard")
         }
+
         // --- Need to Register Avatar case --- 
         else if (response.data.status == "Register") {
           // Store Token
@@ -78,6 +82,7 @@ export default {
           // route to Register Avatar
           this.$router.push("/RegisterAvatar")
         }
+
         // Rejection Login case
         else {
           alert("Please login with KMITL Email")

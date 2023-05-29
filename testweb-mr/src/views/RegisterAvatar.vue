@@ -1,20 +1,22 @@
 <template>
     <v-container>
-        <div>
-            <v-card width="50%" class=" pa-4">
-                <v-sheet>Create your Avatar</v-sheet>
-                <v-form>
-                    <v-row>
-                        <v-col>
-                            <v-sheet>Avatar name</v-sheet>
-                            <v-text-field label="Enter Avatar name" ref="AvatarName"></v-text-field>
+        <v-row justify="center">
+            <v-col cols="6">
+                <v-card width="600" class=" pa-4">
+                    <v-sheet>Create your Avatar</v-sheet>
+                    <v-form>
+                        <v-row>
+                            <v-col>
+                                <v-sheet>Avatar name</v-sheet>
+                                <v-text-field label="Enter Avatar name" ref="AvatarName"></v-text-field>
 
-                            <v-btn @click="postUserAvatar">Create</v-btn>
-                        </v-col>
-                    </v-row>
-                </v-form>
-            </v-card>
-        </div>
+                                <v-btn @click="postUserAvatar">Create</v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-form>
+                </v-card>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
@@ -32,17 +34,17 @@ export default {
                 avatarName: avatar
             }
             axios.post(URL_Register, userAvatar)
-            .then((response) => {
-                if(response.status == 200){
-                    this.$router.push('/QuestBoard')
-                }else {
-                    alert("Name Used. Try other name")
-                }
-                
-            })
+                .then((response) => {
+                    if (response.status == 200) {
+                        this.$router.push('/QuestBoard')
+                    } else {
+                        alert("Name Used. Try other name")
+                    }
+
+                })
                 .catch((error) => {
                     // handle errors
-                    console.log("Error on Register Avatar: ",error);
+                    console.log("Error on Register Avatar: ", error);
                 });
         }
     }
