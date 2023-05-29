@@ -6,19 +6,19 @@
                 <v-col cols="2">
                     <v-sheet rounded="lg">
                         <v-list height="400" rounded="lg">
-                            <v-list-item @click="questType = 'N/A'">
+                            <v-list-item @click="selectQuestType('Current')">
                                 <v-list-item-title>
                                     Current Quest
                                 </v-list-item-title>
                             </v-list-item>
-                            <v-list-item @click="questType = 'Level 1'">
+                            <v-list-item @click="selectQuestType('Expired')">
                                 <v-list-item-title>
                                     <!-- Quest Expire -->
-                                    Expire Quest
+                                    Expired Quest
                                 </v-list-item-title>
                             </v-list-item>
                             <v-divider class="my-2"></v-divider>
-                            <v-list-item @click="dialogManage()">
+                            <v-list-item @click="openDialogManage()">
                                 <v-list-item-title>
                                     Manage Quest
                                 </v-list-item-title>
@@ -46,10 +46,11 @@
                                 </div>
                                 <div class="d-flex flex-row">
                                     <v-card-actions>
-                                        <v-btn @click="dialogSeeDetails(card)" v-text="'See Details'" color="light"></v-btn>
+                                        <v-btn @click="openDialogSeeDetails(card)" v-text="'See Details'"
+                                            color="light"></v-btn>
                                     </v-card-actions>
                                     <v-card-actions>
-                                        <v-btn @click="postdata(card.QuestID)" v-text="'Get Quest'"></v-btn>
+                                        <v-btn @click="postStudentGetWork(card.QuestID)" v-text="'Get Quest'"></v-btn>
                                     </v-card-actions>
                                 </div>
                             </v-card>
@@ -86,168 +87,133 @@
 
         <!-- PopUP Panel Manage Quest -->
         <v-dialog v-model="dialog.dialogManageQuest">
-            <v-card theme="dark">
-                <v-toolbar dark color="blue">
-                    <v-btn @click="dialog.dialogManageQuest = false">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>Manage Quest</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                </v-toolbar>
+            <v-form>
+                <v-card theme="dark" min-width="600" min-height="600">
+                    <v-toolbar dark color="blue">
+                        <v-btn @click="closeDialogManage()">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>Manage Quest</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
 
-                <!-- Left side selection quest -->
-                <v-row>
-                    <v-col cols="2">
-                        <v-sheet rounded="lg">
-                            <v-list rounded="lg">
-                                <v-list-item @click="dialogSelectQuest(Quest)">
-                                    <v-list-item-title>
-                                        Add New Quest
-                                    </v-list-item-title>
-                                </v-list-item>
-                                <v-divider class="my-2" />
-                                <div v-for="Quest in QuestList" :key=Quest.QuestID>
-                                    <v-list-item @click="dialogSelectQuest(Quest)">
+                    <!-- Left side selection quest -->
+                    <v-row>
+                        <v-col cols="2">
+                            <v-sheet rounded="lg">
+                                <v-list rounded="lg">
+                                    <v-list-item @click="createQuest()">
                                         <v-list-item-title>
-                                            Quest {{ Quest.QuestID }}
+                                            Add New Quest
                                         </v-list-item-title>
                                     </v-list-item>
-                                </div>
-                            </v-list>
-                        </v-sheet>
-                    </v-col>
+                                    <v-divider class="my-2" />
+                                    <div v-for="Quest in QuestList" :key=Quest.QuestID>
+                                        <v-list-item @click="dialogSelectQuest(Quest)">
+                                            <v-list-item-title>
+                                                Quest {{ Quest.QuestID }}
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </div>
+                                </v-list>
+                            </v-sheet>
+                        </v-col>
 
-                    <!-- Form Quest -->
-                    <v-col>
-                        <v-form class="ma-6">
-                            <v-row>
+                        <!-- Form Quest -->
+                        <v-col v-if="showForm">
+                            <v-row class="ma-6">
                                 <v-col>
                                     <v-sheet>Status Quest</v-sheet>
                                     <v-select label="Select Status"
                                         :items="['Unassign', 'Available', 'Expired',]"></v-select>
 
                                     <v-sheet>Quest ID</v-sheet>
-                                    <v-text-field name="Quest ID" label="Quest ID"
-                                        :model-value="selectQuest.QuestID"></v-text-field>
+                                    <v-text-field name="Quest ID" label="Quest ID" type="text"
+                                        :model-value="selectQuest.QuestID" ref="QuestIDValue"></v-text-field>
 
                                     <v-sheet>Quest Name</v-sheet>
-                                    <v-text-field name="Quest Name" label="Quest Name"
-                                        :model-value="selectQuest.QuestName"></v-text-field>
+                                    <v-text-field name="Quest Name" label="Quest Name" type="text"
+                                        :model-value="selectQuest.QuestName" ref="QuestNameValue"></v-text-field>
 
                                     <v-sheet>Requirement</v-sheet>
-                                    <v-text-field name="Requirement" label="Requirement"
-                                        :model-value="selectQuest.Requirement"></v-text-field>
+                                    <v-text-field name="Requirement" label="Requirement" type="text"
+                                        :model-value="selectQuest.Requirement" ref="RequirementValue"></v-text-field>
 
                                     <v-sheet>Description</v-sheet>
-                                    <v-textarea name="name" label="Description" textarea
-                                        :model-value="selectQuest.Description"></v-textarea>
+                                    <v-textarea name="name" label="Description" type="text" textarea
+                                        :model-value="selectQuest.Description" ref="DescriptionValue"></v-textarea>
 
                                     <v-sheet>Reward</v-sheet>
-                                    <v-text-field name="Reward" label="Reward"
-                                        :model-value="selectQuest.Reward"></v-text-field>
+                                    <v-text-field name="Reward" label="Reward" type="number"
+                                        :model-value="selectQuest.Reward" ref="RewardValue"></v-text-field>
                                 </v-col>
                                 <v-col>
                                     <v-sheet>Duration</v-sheet>
-                                    <v-select label="Select"
-                                        :items="['1 Days', '2 Days', '3 Days', '4 Days', '5 Days', '6 Days', '7 Days',]"
-                                        :model-value="selectQuest.Duration"></v-select>
+                                    <v-text-field label="Days" type="number" :model-value="selectQuest.Duration"
+                                        ref="DurationValue">
+                                    </v-text-field>
 
                                     <v-sheet>Due date</v-sheet>
-                                    <!-- Check Box for select Due date -->
-                                    
-                                    <!-- <v-text-field v-if="selectQuest.QuestExpire == 'N/A'" name="Due date" label="Due date" prepend-icon="mdi-calendar-range"
-                                    type="date"    
-                                    :model-value="selectQuest.QuestExpire"
-                                    
-                                    ref="QIDEZEZ"
-                                    ></v-text-field> -->
-
-                                    <v-text-field :disabled="!disableButton" name="Due date" label="Due date" prepend-icon="mdi-calendar-range"
-                                        :type="disableButton? 'date': 'text' " :model-value="disableButton ? selectQuest.QuestExpire : 'N/A' "
-                                        ref="DueDateValue"></v-text-field>
-                                    <v-checkbox 
-                                        label="Set Due date"
-                                        ref="SetDueDate"
-                                        v-model ="disableButton"
-                                    >
+                                    <v-text-field :disabled="!disableButton" name="Due date" label="Due date"
+                                        prepend-icon="mdi-calendar-range" 
+                                        :type="disableButton ? 'date' : 'text'"
+                                        :model-value="disableButton ? selectQuest.QuestExpire : 'N/A'" 
+                                        ref="DueDateValue">
+                                    </v-text-field>
+                                    <v-checkbox label="Set Due date" ref="SetDueDate" v-model="disableButton">
                                     </v-checkbox>
+
                                     {{ this.disableButton }}
+
+                                    {{ this.dataForTest }}
                                 </v-col>
                             </v-row>
-                        </v-form>
-                    </v-col>
-                </v-row>
-            </v-card>
-            <v-toolbar dark color="blue" d-flex>
-                <v-btn>Cancel</v-btn>
-                <v-btn @click="logdata">Confirm</v-btn>
-            </v-toolbar>
-        </v-dialog>
 
+                        </v-col>
+                    </v-row>
+                </v-card>
+                <v-toolbar dark color="blue" d-flex>
+                    <v-btn @click="closeDialogManage()">Cancel</v-btn>
+                    <v-btn @click="postAddEditQuest()">Confirm</v-btn>
+                </v-toolbar>
+            </v-form>
+        </v-dialog>
     </v-main>
 </template>
 
 <script>
 
-import axios from 'axios'
+import axios from '@/api/axios'
 // import moment from 'moments'
 
 
 
-// Set URL Backend
-const URLGET = ""
+// GETSet URL_QuestList
+const URL_Get_QuestList = "/questboard"
 
-// Student Select Quest
-const URLPOST = ""
+// POST Student Select Get Quest
+const URL_Post_StudentGetWork = "/payloadAdd"
+
+// POST Add/Edit Quest
+const URL_Post_AddEditQuest = "/editquest"
 
 export default {
     name: "QuestBoard",
     data: () => ({
+        dataForTest: "",
         due: "",
         disableButton: false,
+        showForm: false,
         questType: "N/A",
         dialog: {
             dialogConfirm: false,
             dialogDetailQuest: false,
             dialogManageQuest: false,
         },
-
-        QuestList: [{
-            QuestID: "001",
-            QuestName: "Joining the journey",
-            Description: "Join Google Classroom of mixed reality class with code wceeoa",
-            Reward: "5 exp",
-            Requirement: "Level 1",
-            MinParty: 1,
-            MaxParty: 1,
-            Duration: "5 Days",
-            QuestExpire: "N/A"
-        },
-        {
-            QuestID: "002",
-            QuestName: "Explore the world",
-            Description: "Find your selected mixed reality program and describe where in reality-virtuality continuum it should be",
-            Reward: "5 exp",
-            Requirement: "N/A",
-            MinParty: 1,
-            MaxParty: 1,
-            Duration: "5 Days",
-            QuestExpire: "27/08/2023"
-        },
-        {
-            QuestID: "003",
-            QuestName: "Senses",
-            Description: "Pick 2 or more senses of human body and describe how they work collaborately with each other and what human body expect to sense from them",
-            Reward: "10 exp",
-            Requirement: "N/A",
-            MinParty: 1,
-            MaxParty: 2,
-            Duration: "5 Days",
-            QuestExpire: "03/09/2023"
-        },],
+        QuestList: [],
         showDetail: [],
         selectQuest: [],
-        Testdata: [
+        TestQuestList: [
             {
                 QuestID: "001",
                 QuestName: "Joining the journey",
@@ -363,64 +329,125 @@ export default {
     methods: {
         logdata(data) {
             // console.log(moment(this.$refs["QIDEZEZ"].value).format('DD/MM/YYYY'))
-            this.$refs["QIDEZEZ"].value
+            this.dataForTest = this.$refs["DueDateValue"].value
+            console.log(this.$refs["DueDateValue"].value)
+            console.log(this.$refs["DurationValue"].value)
         },
 
-        //Get List of Quest
-        async getData() {
-            await axios.get(URLGET).then((response) => {
-                // handle success
-                console.log("Get:", response);
-            })
-                .catch((error) => {
-                    // handle errors
-                });
+        selectQuestType(selectType) {
+            if (selectType == "Current") {
+                this.questType = "N/A"
+            } else if (selectType == "Expired") {
+                this.questType = ""
+            }
         },
-        postdata(Quest) {
-            axios.post(URLPOST, {
-                QuestID: Quest
-            }).then((response) => {
-                // handle success
-                console.log("Student Get Quest Post:", response);
-            })
-                .catch((error) => {
-                    // handle errors
-                });
-        },
-
-        dialogSeeDetails(cardData) {
+        openDialogSeeDetails(cardData) {
             this.dialog.dialogDetailQuest = true
             this.showDetail = cardData
         },
-        dialogManage() {
+
+        closeDialogSeeDetails() {
+            this.dialog.dialogDetailQuest = false
+        },
+
+        openDialogManage() {
             this.dialog.dialogManageQuest = true
         },
+
+        closeDialogManage() {
+            this.dialog.dialogManageQuest = false
+            this.showForm = false
+            this.selectQuest = []
+        },
+
+        createQuest() {
+            this.showForm = true
+            this.disableButton = false
+            this.selectQuest = []
+        },
         dialogSelectQuest(questData) {
+            this.showForm = true
+            this.disableButton = true
             this.selectQuest = questData
-        }
+            if(questData.QuestExpire == "N/A" || questData.QuestExpire == null) {
+                this.disableButton = false
+            }else {
+                this.disableButton = true
+            }
+            
+        },
+
+        //Get List of Quest
+        async getQuestData() {
+            await axios.get(URL_Get_QuestList, {studentId: "111355848139463620207"}).then((response) => {
+                // handle success
+                console.log("Get:", response.data);
+                this.QuestList = response.data
+                
+
+            })
+                .catch((error) => {
+                    // handle errors
+                    console.log(error);
+                });
+        },
+        postStudentGetWork(Quest) {
+            const postGetWork = {
+                QuestID: Quest,
+                studentId: "111355848139463620207"
+            }
+            axios.post(URL_Post_StudentGetWork, postGetWork).then((response) => {
+                // handle success
+                console.log("Student Get Quest Post:", response.data);
+            })
+                .catch((error) => {
+                    // handle errors
+                    console.log(error);
+                });
+        },
+
+        postAddEditQuest() {
+            const postAdd_or_Edit = {
+                QuestID: this.$refs["QuestIDValue"].value,
+                QuestName: this.$refs["QuestNameValue"].value,
+                Description: this.$refs["DescriptionValue"].value,
+                Reward: this.$refs["RewardValue"].value,
+                Requirement: this.$refs["RequirementValue"].value,
+                MinParty: 1,
+                MaxParty: 1,
+                Duration: this.$refs["DurationValue"].value,
+                QuestExpire: this.$refs["DueDateValue"].value
+            }
+            
+            console.log("Status: ", postAdd_or_Edit);
+
+            axios.post(URL_Post_AddEditQuest, postAdd_or_Edit).then((response) => {
+                // handle success
+                console.log("Status: ", response.data);
+                if(response.status == 200){
+                    alert("เสร็จสิ้น")
+                }else{
+                    alert("ไม่สำเร็จ")
+                }
+                
+            })
+                .catch((error) => {
+                    // handle errors
+                    console.log(error);
+                });
+        },
 
 
     },
     computed: {
         FilterQuest() {
-            return this.Testdata.filter(item => {
-                return item.Requirement == this.questType
+            return this.QuestList.filter(item => {
+                return item.isVisible == this.questType
             })
         },
     },
     mounted() {
-        // this.getData()
+        this.getQuestData()
     }
-    // Async() {
-    //     axios.get(url).then((response) => {
-    //         // handle success
-    //         console.log("Get:", response);
-    //         this.QuestList = response
-    //     })
-    //         .catch((error) => {
-    //             // handle errors
-    //             console.log("ErrorGetQuest", error);
-    //         });
-    // }
 }
 </script>

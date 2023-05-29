@@ -7,9 +7,9 @@
                     <v-row>
                         <v-col>
                             <v-sheet>Avatar name</v-sheet>
-                            <v-text-field label="Enter Avatar name"></v-text-field>
+                            <v-text-field label="Enter Avatar name" ref="AvatarName"></v-text-field>
 
-                            <v-btn>Create</v-btn>
+                            <v-btn @click="postUserAvatar">Create</v-btn>
                         </v-col>
                     </v-row>
                 </v-form>
@@ -21,18 +21,30 @@
 <script>
 import axios from 'axios'
 
-const isAuthenticated = true
+const URL_Register = "/register"
 
 export default {
     name: "RegisterAvatar",
     methods: {
-        goToDashboard() {
-            if (isAuthenticated) {
-                this.$router.push('/QuestBoard')
-            } else {
-                this.$router.push('/login')
+        postUserAvatar() {
+            const avatar = this.$refs["AvatarName"].value
+            const userAvatar = {
+                avatarName: avatar
             }
-        },
+            axios.post(URL_Register, userAvatar)
+            .then((response) => {
+                if(response.status == 200){
+                    this.$router.push('/QuestBoard')
+                }else {
+                    alert("Name Used. Try other name")
+                }
+                
+            })
+                .catch((error) => {
+                    // handle errors
+                    console.log(error);
+                });
+        }
     }
 }
 </script>

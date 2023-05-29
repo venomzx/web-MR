@@ -112,6 +112,7 @@ export default [
         },
     ],
     Logtest = [
+    "21/45/87"[
         {
             AvatarName: "น้องเป็ด",
             DetailLog: "Received 5 EXP from Quest 001"
@@ -127,7 +128,7 @@ export default [
         {
             AvatarName: "ButterBen",
             DetailLog: "Received 5 EXP from Quest 001"
-        },
+        }],
 
         {
             AvatarName: "UU0LFMAN",

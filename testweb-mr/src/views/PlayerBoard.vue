@@ -39,15 +39,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/api/axios'
 
-const URL_getplayer = ""
+const URL_getplayer = "/leaderboard"
 const URL_Setting = ""
 
 export default {
     name: "PlayerBoard",
     data: () => ({
-        Playerlist: [
+        tplayerList: [
             {
                 AvatarName: "Player001",
                 CurrentLevel: 15,
@@ -183,7 +183,7 @@ export default {
                 NextLevelEXPNeeded: 200,
             },
         ],
-        tPlayerlist:[{
+        playerList:[{
                 AvatarName: "Player001",
                 CurrentLevel: 15,
                 CurrentEXP: 20,
@@ -200,6 +200,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
+                    console.log("Get:", error);
                 });
         },
         async getSetting() {
@@ -211,6 +212,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
+                    console.log("Get:", error);
                 });
         },
         defaultPlayerTiers(level) {
@@ -285,7 +287,7 @@ export default {
         }
     },
     mounted() {
-        //this.getPlayerList()
+        this.getPlayerList()
         //this.getSetting()
     }
 }

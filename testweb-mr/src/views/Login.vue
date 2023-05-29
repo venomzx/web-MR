@@ -17,21 +17,14 @@
   </v-main>
 </template>
 
-<script setup>
-// const callback = (response) => {
-//   // This callback will be triggered when the user selects or login to
-//   // his Google account from the popup
-//   console.log("Handle the response", response)
-//   // console.log(response.credential)
-// }
-</script>
+
 
 <script>
-import axios from 'axios'
+import axios from '@/api/axios'
 import { googleTokenLogin } from "vue3-google-login"
 
 // Set URL Backend
-const URL = ""
+const URL_Login = "/login"
 
 export default {
   name: "Login",
@@ -48,8 +41,8 @@ export default {
     onLogin() {
       googleTokenLogin().
         then((response) => {
-          this.postAccessTokenToBackend(response)
-          // this.postAccessTokenToBackend(response.access_token)
+          // this.postAccessTokenToBackend(response)
+          this.postAccessTokenToBackend(response.access_token)
         })
     },
 
@@ -57,39 +50,54 @@ export default {
     onSignUp() {
       googleTokenLogin().
         then((response) => {
-          this.postAccessTokenToBackend(response)
-          // this.postAccessTokenToBackend(response.access_token)
+          // this.postAccessTokenToBackend(response)
+          this.postAccessTokenToBackend(response.access_token)
         })
     },
 
     // post to Backend
     postAccessTokenToBackend(Token) {
-      axios.post(URL, {
-        googleToken: Token
+      axios.post(URL_Login, {
+        accessToken: Token
       }).then((response) => {
         // --- Login Success case --- 
-        if (response.status == "OK") {
+        console.log(response)
+        console.log(response.data.status)
+        if (response.data.status == "OK") {
           // Store Token
-          this.storeToken(response)
+          this.storeToken(response.data.encoded_jwt)
 
           // route to Quest Board
           this.$router.push("/QuestBoard")
         }
         // --- Need to Register Avatar case --- 
-        else if (response.status == "Register") {
+        else if (response.data.status == "Register") {
           // Store Token
-          this.storeToken(response)
+          this.storeToken(response.data.encoded_jwt)
 
           // route to Register Avatar
           this.$router.push("/RegisterAvatar")
         }
         // Rejection Login case
         else {
-          alert("Please login with KMITL Email ")
+          alert("Please login with KMITL Email")
         }
 
       })
+        .catch((error) => {
+          // handle errors
+          console.log(error);
+        });
     }
   },
 };
+</script>
+
+<script setup>
+// const callback = (response) => {
+//   // This callback will be triggered when the user selects or login to
+//   // his Google account from the popup
+//   console.log("Handle the response", response)
+//   // console.log(response.credential)
+// }
 </script>

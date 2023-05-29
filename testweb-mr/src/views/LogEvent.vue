@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from '@/api/axios'
 
-const URL_getlog = ""
+const URL_getlog = "/log"
 
 export default {
   name: "LogEvent",
