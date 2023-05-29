@@ -20,10 +20,14 @@
 <script>
 import Navbar from './components/navigation/Navbar.vue';
 
+
 export default {
   name: 'App',
   components:{
     Navbar,
+  },
+  created(){
+    this.$store.dispatch("tryAutoLogin")
   },
 
   data: () => ({

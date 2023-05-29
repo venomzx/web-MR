@@ -46,22 +46,14 @@ export default createStore({
       );
       localStorage.setItem("token", tokenValue);
 
+      // Sent Request role
+      dispatch("requestRole");
 
-      axios.get("/role").then((response) => {
-        // --- Success case --- 
-        let user_role = response.data.role
-        commit('setUserRole', user_role)
-        console.log(user_role)
-      })
-        .catch((error) => {
-          // handle errors
-          console.log(error);
-        });
       localStorage.setItem("expirationDate", expirationDate);
       dispatch("setLogoutTimer", timer);
     },
 
-    // // set time that admin stay sign in
+    // Set time that admin stay sign in
     setLogoutTimer({ commit, dispatch }, expirationTime) {
       setTimeout(() => {
         dispatch("logout");
@@ -70,6 +62,20 @@ export default createStore({
         alert("Session หมดอายุแล้ว กรุณา Login ใหม่")
 
       }, expirationTime * 1000);
+    },
+
+    requestRole({ commit }) {
+      axios.get("/role").then((response) => {
+        // --- Success case --- 
+        let user_role = response.data.role
+        commit('setUserRole', user_role)
+
+        console.log(user_role)
+      })
+        .catch((error) => {
+          // handle errors
+          console.log("Error Request role", error);
+        });
     },
 
     // re-login when token is not expired
@@ -90,8 +96,11 @@ export default createStore({
       }
       // Authorize user
       commit("getUserToken", token);
-      const user_role = localStorage.getItem("userRole")
-      commit("setUserRole", user_role)
+
+      // Sent Request role
+      dispatch("requestRole");
+      // const user_role = localStorage.getItem("userRole")
+      // commit("setUserRole", user_role)
     },
 
     // Log user out and Remove token in localStorage

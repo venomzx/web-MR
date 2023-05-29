@@ -7,7 +7,7 @@ const isLogin = false
 const routes = [
   {
     path: '/',
-    redirect: isLogin == "" ? '/QuestBoard' : '/Login'
+    redirect: isLogin == null ? '/QuestBoard' : '/Login'
   },
   {
     path: '/Login',

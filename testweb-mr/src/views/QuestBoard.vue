@@ -388,7 +388,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
-                    console.log(error);
+                    console.log("Error on getQuestList: ",error);
                 });
         },
         postStudentGetWork(Quest) {
@@ -402,7 +402,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
-                    console.log(error);
+                    console.log("Error on Post Student Quest: ",error);
                 });
         },
 
@@ -425,15 +425,15 @@ export default {
                 // handle success
                 console.log("Status: ", response.data);
                 if(response.status == 200){
-                    alert("เสร็จสิ้น")
+                    alert("อัพเดรตเสร็จสิ้น")
                 }else{
-                    alert("ไม่สำเร็จ")
+                    alert("อัพเดรตไม่สำเร็จ")
                 }
                 
             })
                 .catch((error) => {
                     // handle errors
-                    console.log(error);
+                    console.log("Error on Update Quest: ",error);
                 });
         },
 

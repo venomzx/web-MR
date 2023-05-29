@@ -200,7 +200,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
-                    console.log("Get:", error);
+                    console.log("Error on Playerboard: ", error);
                 });
         },
         async getSetting() {
@@ -212,7 +212,7 @@ export default {
             })
                 .catch((error) => {
                     // handle errors
-                    console.log("Get:", error);
+                    console.log("Error on getSetting:", error);
                 });
         },
         defaultPlayerTiers(level) {

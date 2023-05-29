@@ -86,7 +86,7 @@ export default {
       })
         .catch((error) => {
           // handle errors
-          console.log(error);
+          console.log("Error on Login: ",error);
         });
     }
   },

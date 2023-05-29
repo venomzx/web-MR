@@ -376,6 +376,7 @@ export default {
       })
         .catch((error) => {
           // handle errors
+          console.log("Error on Log: ", error);
         });
     }
   },
