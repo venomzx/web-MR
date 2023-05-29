@@ -2,12 +2,12 @@
   <v-main class="bg-grey-lighten-3">
     <v-container>
       <v-row>
-        <!-- <v-col cols="2">
+        <v-col cols="2">
           <v-sheet rounded="lg">
             <v-list rounded="lg">
-              <v-list-item v-for="n in 5" :key="n" link>
-                <v-list-item-title>
-                  List Item {{ n }}
+              <v-list-item v-for="item in logData" :key="item">
+                <v-list-item-title @click="getLogDateData(item.dateOfLog, item.logDetail)">
+                  Date {{ item.dateOfLog }}
                 </v-list-item-title>
               </v-list-item>
 
@@ -20,10 +20,11 @@
               </v-list-item>
             </v-list>
           </v-sheet>
-        </v-col> -->
-
+        </v-col>
+        
         <v-row justify="center">
           <v-table fixed-header height="480" theme="dark" density="comfortable">
+            
             <thead>
               <tr>
                 <th class="text-left">
@@ -38,10 +39,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in Logtest" :key="item.LogDays">
-                <td>{{ item.LogDays }}</td>
-                <td>{{ item.AvatarName }}</td>
-                <td>{{ item.DetailLog }}</td>
+              <div v-if="logData == 0">
+                <v-sheet>No Log Found</v-sheet> 
+              </div>
+              <!-- dateOfLog logDetail   log studentName -->
+              <tr v-for="detail in this.detailShow" :key="detail.studentName">
+                <td>{{ this.dateShow }}</td>
+                <td>{{ detail.studentName }}</td>
+                <td>{{ detail.log }}</td>
+
               </tr>
             </tbody>
           </v-table>
@@ -364,20 +370,29 @@ export default {
       }
 
     ],
-    log: [],
+    logData: [],
+    dateShow: null,
+    detailShow: [],
   }),
   methods: {
     async getLog() {
       await axios.get(URL_getlog).then((response) => {
         // handle success
-        this.log = response
-        
-        console.log("Get:", response);
+        this.logData = response.data
+
+        console.log("Get:", response.data);
+        console.log("Get:", response.data);
       })
         .catch((error) => {
           // handle errors
           console.log("Error on Log: ", error);
         });
+    },
+
+    getLogDateData(date,dataDetail) {
+      this.detailShow = dataDetail
+      this.dateShow = date
+      console.log(this.detailShow)
     }
   },
   mounted() {

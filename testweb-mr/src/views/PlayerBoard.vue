@@ -21,11 +21,14 @@
                     </thead>
                     <tbody>
                         <div v-if="SortPlayer == 0">
-                                <v-sheet>No Player Found</v-sheet>
-                            </div>
+                            <v-sheet>No Player Found</v-sheet>
+                        </div>
+                        <!-- "item in SortPlayer"  playerList-->
                         <tr v-for="item in SortPlayer" :key="item.AvatarName"
                             :style="SettingTier == 0 ? defaultPlayerTiers(item.CurrentLevel) : displayPlayerTiers(item.CurrentLevel)">
-                            
+                            <!-- <tr v-for="item in playerList" :key="item.AvatarName"
+                            :style="defaultPlayerTiers(item.CurrentLevel)"> -->
+
                             <td>{{ item.AvatarName }}</td>
                             <td>{{ item.CurrentLevel }}</td>
                             <td>{{ item.CurrentEXP }}</td>
@@ -183,20 +186,15 @@ export default {
                 NextLevelEXPNeeded: 200,
             },
         ],
-        playerList:[{
-                AvatarName: "Player001",
-                CurrentLevel: 15,
-                CurrentEXP: 20,
-                NextLevelEXPNeeded: 150,
-            }],
+        playerList: [],
         SettingTier: [],
     }),
     methods: {
         async getPlayerList() {
             await axios.get(URL_getplayer).then((response) => {
                 // handle success
-                this.playerList = response
-                console.log("Get:", response);
+                this.playerList = response.data
+                console.log("Get:", response.data);
             })
                 .catch((error) => {
                     // handle errors
