@@ -79,6 +79,7 @@ export default {
           // Store Token
           this.storeToken(response.data.encoded_jwt)
 
+
           // route to Register Avatar
           this.$router.push("/RegisterAvatar")
         }

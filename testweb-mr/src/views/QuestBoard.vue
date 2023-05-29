@@ -30,8 +30,7 @@
                 <!-- Quest Board area -->
                 <v-col cols="10" align-self="end">
                     <v-row>
-                        <!-- <v-col v-for="card in FilterQuest" :key="card.QuestID" cols="5"> -->
-                        <v-col v-for="card in TQuestList" :key="card.QuestID" cols="5">
+                        <v-col v-for="card in FilterQuest" :key="card.QuestID" cols="5">
                             <v-card color="blue" @click="!isVisible">
                                 <v-card-title class="text-white"
                                     v-text="card.QuestID + ' ' + card.QuestName"></v-card-title>
@@ -156,10 +155,8 @@
 
                                     <v-sheet>Due date</v-sheet>
                                     <v-text-field :disabled="!disableButton" name="Due date" label="Due date"
-                                        prepend-icon="mdi-calendar-range" 
-                                        :type="disableButton ? 'date' : 'text'"
-                                        :model-value="disableButton ? selectQuest.QuestExpire : 'N/A'" 
-                                        ref="DueDateValue">
+                                        prepend-icon="mdi-calendar-range" :type="disableButton ? 'date' : 'text'"
+                                        :model-value="disableButton ? selectQuest.QuestExpire : 'N/A'" ref="DueDateValue">
                                     </v-text-field>
                                     <v-checkbox label="Set Due date" ref="SetDueDate" v-model="disableButton">
                                     </v-checkbox>
@@ -205,7 +202,7 @@ export default {
         due: "",
         disableButton: false,
         showForm: false,
-        questType: "N/A",
+        questType: "1",
         dialog: {
             dialogConfirm: false,
             dialogDetailQuest: false,
@@ -370,26 +367,28 @@ export default {
             this.showForm = true
             this.disableButton = true
             this.selectQuest = questData
-            if(questData.QuestExpire == "N/A" || questData.QuestExpire == null) {
+            if (questData.QuestExpire == "N/A" || questData.QuestExpire == null) {
                 this.disableButton = false
-            }else {
+            } else {
                 this.disableButton = true
             }
-            
+
         },
 
         //Get List of Quest
         async getQuestData() {
-            await axios.get(URL_Get_QuestList, {studentId: "111355848139463620207"}).then((response) => {
-                // handle success
-                console.log("Get:", response.data);
-                this.QuestList = response.data
-                
+            await axios
+                .post(URL_Get_QuestList, { encoded_jwt: this.$store.state.user_token })
+                .then((response) => {
+                    // handle success
+                    console.log("Get:", response.data);
+                    this.QuestList = response.data
 
-            })
+
+                })
                 .catch((error) => {
                     // handle errors
-                    console.log("Error on getQuestList: ",error);
+                    console.log("Error on getQuestList: ", error);
                 });
         },
         postStudentGetWork(Quest) {
@@ -397,13 +396,15 @@ export default {
                 QuestID: Quest,
                 studentId: "111355848139463620207"
             }
-            axios.post(URL_Post_StudentGetWork, postGetWork).then((response) => {
-                // handle success
-                console.log("Student Get Quest Post:", response.data);
-            })
+            axios
+                .post(URL_Post_StudentGetWork, postGetWork)
+                .then((response) => {
+                    // handle success
+                    console.log("Student Get Quest Post:", response.data);
+                })
                 .catch((error) => {
                     // handle errors
-                    console.log("Error on Post Student Quest: ",error);
+                    console.log("Error on Post Student Quest: ", error);
                 });
         },
 
@@ -419,22 +420,24 @@ export default {
                 Duration: this.$refs["DurationValue"].value,
                 QuestExpire: this.$refs["DueDateValue"].value
             }
-            
+
             console.log("Status: ", postAdd_or_Edit);
 
-            axios.post(URL_Post_AddEditQuest, postAdd_or_Edit).then((response) => {
-                // handle success
-                console.log("Status: ", response.data);
-                if(response.status == 200){
-                    alert("อัพเดรตเสร็จสิ้น")
-                }else{
-                    alert("อัพเดรตไม่สำเร็จ")
-                }
-                
-            })
+            axios
+                .post(URL_Post_AddEditQuest, postAdd_or_Edit)
+                .then((response) => {
+                    // handle success
+                    console.log("Status: ", response.data);
+                    if (response.status == 200) {
+                        alert("อัพเดรตเสร็จสิ้น")
+                    } else {
+                        alert("อัพเดรตไม่สำเร็จ")
+                    }
+
+                })
                 .catch((error) => {
                     // handle errors
-                    console.log("Error on Update Quest: ",error);
+                    console.log("Error on Update Quest: ", error);
                 });
         },
 
@@ -443,7 +446,7 @@ export default {
     computed: {
         FilterQuest() {
             return this.QuestList.filter(item => {
-                return item.isVisible == this.questType
+                return item.visible == this.questType
             })
         },
     },

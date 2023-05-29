@@ -11,11 +11,11 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-    if(store.getters.isAuthenticated){
-        console.log(config.headers)
-        config.headers.Authorization = 'Bearer ' + store.getters.token
+    // if(store.getters.isAuthenticated){
+    //     console.log(config.headers)
+    //     config.headers.Authorization = 'Bearer ' + store.getters.token
         
-    }
+    // }
     return config;
 });
 

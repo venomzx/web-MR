@@ -48,7 +48,7 @@ export default createStore({
       localStorage.setItem("token", tokenValue);
 
       // Sent Request role
-      dispatch("requestRole");
+      dispatch("requestRole", tokenValue);
 
       localStorage.setItem("expirationDate", expirationDate);
       dispatch("setLogoutTimer", timer);
@@ -65,14 +65,17 @@ export default createStore({
       }, expirationTime * 1000);
     },
 
-    requestRole({ commit }) {
-      axios.get("/role").then((response) => {
-        // --- Success case --- 
-        let user_role = response.data.role
-        commit('setUserRole', user_role)
+    requestRole({ commit }, token) {
+      axios
+        .post("/role", { "encoded_jwt": token })
+        .then((response) => {
+          // --- Success case --- 
+          console.log(response) 
+          let user_role = response.data.role
+          commit('setUserRole', user_role)
 
-        console.log(user_role)
-      })
+          console.log("TESTTTTT:",user_role)
+        })
         .catch((error) => {
           // handle errors
           console.log("Error Request role", error);
@@ -112,7 +115,7 @@ export default createStore({
       commit("clearAuthData");
       // localStorage.removeItem('userId')
       // this.$router.push("/Login")
-      
+
     },
   },
   modules: {
