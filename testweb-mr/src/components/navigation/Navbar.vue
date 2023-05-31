@@ -9,6 +9,8 @@
     </v-list-item>
     <v-list-item v-if="this.$store.state.user_token">
       <v-btn @click="onLogout">Logout</v-btn>
+      <v-btn @click="onForceUnPayload">ForceUnPayload</v-btn>
+      <v-btn @click="onForceUnCheckSubmission">ForceUnCheckSubmission</v-btn>
     </v-list-item>
   </v-app-bar>
 
@@ -24,20 +26,20 @@
       </v-list-item>
 
       <v-list v-if="this.$store.state.user_token">
-      <v-list-item prepend-icon="mdi-view-dashboard" title="QuestBoard" router-link to="/QuestBoard">
-      </v-list-item>
-      <v-list-item prepend-icon="mdi-history" title="Log" router-link to="/LogEvent">
-      </v-list-item>
-      <v-list-item prepend-icon="mdi-account-group" title="PlayerBoard" router-link to="/PlayerBoard">
-      </v-list-item>
-      <!-- <v-list-item title="Party" router-link to="/Party"></v-list-item> -->
-    </v-list>
+        <v-list-item prepend-icon="mdi-view-dashboard" title="QuestBoard" router-link to="/QuestBoard">
+        </v-list-item>
+        <v-list-item prepend-icon="mdi-history" title="Log" router-link to="/LogEvent">
+        </v-list-item>
+        <v-list-item prepend-icon="mdi-account-group" title="PlayerBoard" router-link to="/PlayerBoard">
+        </v-list-item>
+        <!-- <v-list-item title="Party" router-link to="/Party"></v-list-item> -->
+      </v-list>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script>
-
+import axios from '@/api/axios'
 
 export default {
   name: "Navbar",
@@ -48,8 +50,34 @@ export default {
   },
   methods: {
     onLogout() {
+      this.$router.push("/Login")
       this.$store.dispatch("logoutAction")
-    }
+    },
+    onForceUnPayload() {
+      axios
+        .get("/forceunloadpayload")
+        .then((response) => {
+          // --- Success case --- 
+          console.log(response)
+        })
+        .catch((error) => {
+          // handle errors
+          console.log("Error ", error);
+        });
+    },
+    onForceUnCheckSubmission() {
+      axios
+        .get("/forceuncheckSubmission")
+        .then((response) => {
+          // --- Success case --- 
+          console.log(response)
+        })
+        .catch((error) => {
+          // handle errors
+          console.log("Error ", error);
+        });
+    },
+
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import axios from '@/api/axios'
-import { push } from 'vue-router'
+// import router from '@/router'
 // import jwt from 'jsonwebtoken';
 
 

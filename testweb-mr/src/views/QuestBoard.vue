@@ -401,10 +401,12 @@ export default {
                 .then((response) => {
                     // handle success
                     console.log("Student Get Quest Post:", response.data);
+                    alert("รับเควสสำเร็จ เควส: ", Quest)
                 })
                 .catch((error) => {
                     // handle errors
                     console.log("Error on Post Student Quest: ", error);
+                    alert("รับเควสไม่สำเร็จ เควส: ", Quest)
                 });
         },
 
