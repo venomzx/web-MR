@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="bg-grey-lighten-2">
 
     <!-- <v-app-bar height="60" color="blue">
       <v-btn><v-icon>mdi-close</v-icon></v-btn>
