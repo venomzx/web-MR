@@ -11,6 +11,9 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
+    
+    // Check json request header 
+
     // if(store.getters.isAuthenticated){
     //     console.log(config.headers)
     //     config.headers.Authorization = 'Bearer ' + store.getters.token

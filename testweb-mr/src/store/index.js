@@ -74,7 +74,7 @@ export default createStore({
           let user_role = response.data.role
           commit('setUserRole', user_role)
 
-          console.log("TESTTTTT:",user_role)
+          console.log("Test Log Role:",user_role)
         })
         .catch((error) => {
           // handle errors

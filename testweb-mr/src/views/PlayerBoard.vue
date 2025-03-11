@@ -20,6 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- No user data case-->
                         <div v-if="SortPlayer == 0">
                             <v-sheet>No Player Found</v-sheet>
                         </div>
