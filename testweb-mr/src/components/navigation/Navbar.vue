@@ -9,13 +9,17 @@
     </v-list-item>
     <v-list-item v-if="this.$store.state.user_token">
       <v-btn @click="onLogout">Logout</v-btn>
-      <v-btn @click="onForceUnPayload">ForceUnPayload</v-btn>
-      <v-btn @click="onForceUnCheckSubmission">ForceUnCheckSubmission</v-btn>
+
+      <!-- Test Button Forced Assign work -->
+      <v-btn @click="onForceUnPayload">Test Deploy work</v-btn>
+      <v-btn @click="onForceUnCheckSubmission">Test Checked result score</v-btn>
+      
     </v-list-item>
   </v-app-bar>
 
   <v-navigation-drawer v-model="drawer" temporaryww color="blue">
     <v-list-item prepend-avatar="" prepend-icon="mdi-account-circle" title="Username"></v-list-item>
+    <v-list-item prepend-avatar="" prepend-icon="mdi-account-circle" :title="this.$store.state.user_Role"></v-list-item>
 
     <v-divider></v-divider>
 
